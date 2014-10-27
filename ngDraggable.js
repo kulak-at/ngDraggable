@@ -100,12 +100,12 @@ angular.module("ngDraggable", [])
 
                         if (_centerAnchor) {
                             _tx = _mx - element.centerX - $window.scrollLeft();
-                            _ty = _my - element.centerY - $window.scrollTop();    
+                            _ty = _my - element.centerY - $window.scrollTop();
                         } else {
                             _tx = offset.left - $window.scrollLeft();
-                            _ty = offset.top - $window.scrollTop();    
+                            _ty = offset.top - $window.scrollTop();
                         }
-                        
+
                         moveElement(_tx, _ty);
                         $document.on(_moveEvents, onmove);
                         $document.on(_releaseEvents, onrelease);
@@ -208,12 +208,12 @@ angular.module("ngDraggable", [])
                             }
 
                             // call the ngDrop element callback
-                         //   scope.$apply(function () {
-                         //       onDropCallback(scope, {$data: obj.data, $event: evt});
-                         //   });
-                            $timeout(function(){
-                                onDropCallback(scope, {$data: obj.data, $event: obj});
-                            });
+                           scope.$apply(function () {
+                               onDropCallback(scope, {$data: obj.data, $event: obj});
+                           });
+                            // $timeout(function(){
+                                // onDropCallback(scope, {$data: obj.data, $event: obj});
+                            // });
 
 
                         }
