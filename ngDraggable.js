@@ -43,6 +43,9 @@ angular.module("ngDraggable", [])
                         scope.$watch(attrs.ngCenterAnchor, onCenterAnchor);
                         scope.$watch(attrs.ngDragData, onDragDataChange);
                         element.on(_pressEvents, onpress);
+                        if(attrs.handle) {
+                          element.find('.' + attrs.handle).on('click', function(evt) { evt.stopPropagation(); });
+                        }
                         if(! _hasTouch){
                             element.on('mousedown', function(){ return false;}); // prevent native drag
                         }
@@ -67,6 +70,9 @@ angular.module("ngDraggable", [])
                     var onpress = function(evt) {
                         if(! _dragEnabled)return;
 
+                        if(attrs.handle && !$(evt.target).hasClass(attrs.handle)) {
+                          return;
+                        }
 
                         if(_hasTouch){
                             cancelPress();
