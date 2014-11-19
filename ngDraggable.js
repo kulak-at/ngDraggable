@@ -174,6 +174,7 @@ angular.module("ngDraggable", [])
                     var _dropEnabled=false;
 
                     var onDropCallback = $parse(attrs.ngDropSuccess);// || function(){};
+                    var dropIfCallback = $parse(attrs.dropIf);
                     var initialize = function () {
                         toggleListeners(true);
                     };
@@ -199,15 +200,15 @@ angular.module("ngDraggable", [])
                     }
                     var onDragStart = function(evt, obj) {
                         if(! _dropEnabled)return;
-                        isTouching(obj.x,obj.y,obj.element);
+                        isTouching(obj.x,obj.y,obj.element, obj.data);
                     }
                     var onDragMove = function(evt, obj) {
                         if(! _dropEnabled)return;
-                        isTouching(obj.x,obj.y,obj.element);
+                        isTouching(obj.x,obj.y,obj.element, obj.data);
                     }
                     var onDragEnd = function(evt, obj) {
                         if(! _dropEnabled)return;
-                        if(isTouching(obj.x,obj.y,obj.element)){
+                        if(isTouching(obj.x,obj.y,obj.element, obj.data)){
                             // call the ngDraggable ngDragSuccess element callback
                            if(obj.callback){
                                 obj.callback(obj);
@@ -223,15 +224,15 @@ angular.module("ngDraggable", [])
 
 
                         }
-                        updateDragStyles(false, obj.element);
+                        updateDragStyles(false, obj.element, obj.data);
                     }
-                    var isTouching = function(mouseX, mouseY, dragElement) {
+                    var isTouching = function(mouseX, mouseY, dragElement, data) {
                         var touching= hitTest(mouseX, mouseY);
-                        updateDragStyles(touching, dragElement);
+                        updateDragStyles(touching, dragElement, data);
                         return touching;
                     }
                     var updateDragStyles = function(touching, dragElement) {
-                        if(touching){
+                        if(touching && dropIfCallback(scope, { $data: data })) {
                             element.addClass('drag-enter');
                             dragElement.addClass('drag-over');
                         }else{
