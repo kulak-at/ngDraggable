@@ -174,7 +174,7 @@ angular.module("ngDraggable", [])
                     var _dropEnabled=false;
 
                     var onDropCallback = $parse(attrs.ngDropSuccess);// || function(){};
-                    var dropIfCallback = $parse(attrs.dropIf);
+                    var dropIfCallback = $parse(attrs.dropIf || 'true');
                     var initialize = function () {
                         toggleListeners(true);
                     };
@@ -227,12 +227,12 @@ angular.module("ngDraggable", [])
                         updateDragStyles(false, obj.element, obj.data);
                     }
                     var isTouching = function(mouseX, mouseY, dragElement, data) {
-                        var touching= hitTest(mouseX, mouseY);
+                        var touching = hitTest(mouseX, mouseY) && dropIfCallback(scope, { $data: data });
                         updateDragStyles(touching, dragElement, data);
                         return touching;
                     }
-                    var updateDragStyles = function(touching, dragElement) {
-                        if(touching && dropIfCallback(scope, { $data: data })) {
+                    var updateDragStyles = function(touching, dragElement, data) {
+                        if(touching) {
                             element.addClass('drag-enter');
                             dragElement.addClass('drag-over');
                         }else{
