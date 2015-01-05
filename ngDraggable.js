@@ -95,6 +95,9 @@ angular.module("ngDraggable", [])
                     var onlongpress = function(evt) {
                         if(! _dragEnabled)return;
                         evt.preventDefault();
+                        if(evt.target.getAttribute('no-drag')) {
+                            return;
+                        }
                         offset = element.offset();
                         element.centerX = (element.width()/2);
                         element.centerY = (element.height()/2);
@@ -199,6 +202,7 @@ angular.module("ngDraggable", [])
                         _dropEnabled=scope.$eval(newVal);
                     }
                     var onDragStart = function(evt, obj) {
+                        evt.preventDefault();
                         if(! _dropEnabled)return;
                         isTouching(obj.x,obj.y,obj.element, obj.data);
                     }
@@ -207,6 +211,7 @@ angular.module("ngDraggable", [])
                         isTouching(obj.x,obj.y,obj.element, obj.data);
                     }
                     var onDragEnd = function(evt, obj) {
+                        evt.preventDefault();
                         if(! _dropEnabled)return;
                         if(isTouching(obj.x,obj.y,obj.element, obj.data)){
                             // call the ngDraggable ngDragSuccess element callback
