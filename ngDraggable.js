@@ -94,14 +94,16 @@ angular.module("ngDraggable", [])
                     }
                     var onlongpress = function(evt) {
                         if(! _dragEnabled)return;
-                        evt.preventDefault();
-                        if(evt.target.getAttribute('no-drag')) {
+                        if(evt.originalEvent.target.getAttribute('no-drag')) {
                             return;
                         }
+                        evt.preventDefault();
+
                         offset = element.offset();
                         element.centerX = (element.width()/2);
                         element.centerY = (element.height()/2);
                         element.addClass('dragging');
+                        element.trigger('dragStart');
                         _mx = (evt.pageX || evt.originalEvent.touches[0].pageX);
                         _my = (evt.pageY || evt.originalEvent.touches[0].pageY);
                         _mrx = _mx - offset.left;
